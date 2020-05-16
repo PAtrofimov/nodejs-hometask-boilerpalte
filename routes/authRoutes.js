@@ -1,18 +1,24 @@
-const { Router } = require('express');
-const AuthService = require('../services/authService');
-const { responseMiddleware } = require('../middlewares/response.middleware');
+const { Router } = require("express");
+const AuthService = require("../services/authService");
+const { responseMiddleware } = require("../middlewares/response.middleware");
+const {HTTP_STATUS_ERROR_NOT_FOUND} = require("../constants/index");
 
 const router = Router();
 
-router.post('/login', (req, res, next) => {
+router.post(
+  "/login",
+  (req, res, next) => {
     try {
-        // TODO: Implement login action
-        res.data = data;
+      // TODO: Implement login action
+      res.data = AuthService.login(req.body);
     } catch (err) {
-        res.err = err;
+      err.httpStatus = HTTP_STATUS_ERROR_NOT_FOUND;
+      res.err = err;
     } finally {
-        next();
+      next();
     }
-}, responseMiddleware);
+  },
+  responseMiddleware
+);
 
 module.exports = router;
